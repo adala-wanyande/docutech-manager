@@ -44,7 +44,7 @@ class TasksController < ApplicationController
     end
   
     private
-  #Find what this block does with GPT
+  
     def find_task
       Task.find(params[:id])
     end
