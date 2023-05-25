@@ -4,9 +4,12 @@ class TasksController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
+    #berore_action :authenticate_user! #Not yet merged
+
 
     # GET /tasks
     def index
+      #tasks = current_user.tasks
       #tasks = Task.all.includes(:user).order(created_at: :desc)
       #render json: tasks, each_serializer: TaskListSerializer
       render json: {page: "tasks"}
