@@ -1,64 +1,50 @@
-#Next item Serializers
-
 class TasksController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
-    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-
-    #berore_action :authenticate_user! #Not yet merged
-
-
-    # GET /tasks
+    before_action :set_task, only: [:show, :update, :destroy]
+  
     def index
-      #tasks = current_user.tasks
-      #tasks = Task.all.includes(:user).order(created_at: :desc)
-      #render json: tasks, each_serializer: TaskListSerializer
-      render json: {page: "tasks"}
+      tasks = Task.all
+      render json: tasks, each_serializer: TaskSerializer
     end
   
-     # GET /tasks/:id
     def show
-      tasks = Task.find(params[:id])
-      render json: tasks
+      render json: task, serializer: TaskSerializer
     end
-
-    # POST /tasks
+  
     def create
-      task = Task.create!(task_params)
-      render json: task, status: :created
+      task = Task.new(task_params)
+      if task.save
+        render json: task, status: :created, serializer: TaskSerializer
+      else
+        render json: { error: task.errors.full_messages }, status: :unprocessable_entity
+      end
     end
-
-    # PATCH /tasks/:id
+  
     def update
-      task = find_task
-      task.update!(task_params)
-      render json: task
+      if task.update(task_params)
+        render json: task, serializer: TaskSerializer
+      else
+        render json: { error: task.errors.full_messages }, status: :unprocessable_entity
+      end
     end
-
-    # DELETE /tasks/:id
+  
     def destroy
-      task = find_task
       task.destroy
       head :no_content
     end
-      
   
     private
-
-    def find_task
-      Task.find(params[:id])
+  
+    def render_not_found_response
+        render json: { error: "user not found" }, status: :not_found
     end
-
+  
+    def set_task
+      task = Task.find(params[:id])
+    end
+  
     def task_params
-      params.permit(:title, :description, :comments)
+      params.require(:task).permit(:name, :description, :due_date, :status, :project_id)
     end
-  
-    def record_not_found
-      render json: { error: "Article not found" }, status: :not_found
-    end
-
-    def render_unprocessable_entity_response(invalid)
-      render json: { errors: invalid.record.errors }, status: :unprocessable_entity
-    end
-
-  
   end
+  
