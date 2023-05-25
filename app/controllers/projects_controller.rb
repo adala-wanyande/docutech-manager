@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
     end
   
     def create
-      project = Project.new(project_params)
+      project = Project.create!(project_params)
       if project.save
         render json: project, status: :created, serializer: ProjectSerializer
       else
@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
     end
   
     def update
-      if project.update(project_params)
+      if project.update!(project_params)
         render json: project, serializer: ProjectSerializer
       else
         render json: { error: project.errors.full_messages }, status: :unprocessable_entity

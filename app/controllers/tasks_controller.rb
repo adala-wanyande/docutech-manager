@@ -12,7 +12,7 @@ class TasksController < ApplicationController
     end
   
     def create
-      task = Task.new(task_params)
+      task = Task.create!(task_params)
       if task.save
         render json: task, status: :created, serializer: TaskSerializer
       else
@@ -21,7 +21,7 @@ class TasksController < ApplicationController
     end
   
     def update
-      if task.update(task_params)
+      if task.update!(task_params)
         render json: task, serializer: TaskSerializer
       else
         render json: { error: task.errors.full_messages }, status: :unprocessable_entity
