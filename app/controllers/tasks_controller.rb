@@ -29,12 +29,6 @@ class TasksController < ApplicationController
       render json: task
     end
   
-    # PATCH /tasks/:id/like
-    def increment_likes
-      task = find_task
-      task.update(likes: task.likes + 1)
-      render json: task
-    end
   
     # DELETE /tasks/:id
     def destroy
