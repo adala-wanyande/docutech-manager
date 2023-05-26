@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_26_092018) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_26_114138) do
   create_table "assignments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "task_id", null: false
@@ -38,6 +38,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_26_092018) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "task_id"
+    t.index ["task_id"], name: "index_projects_on_task_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -66,6 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_26_092018) do
   add_foreign_key "assignments", "users"
   add_foreign_key "comments", "tasks"
   add_foreign_key "comments", "users"
+  add_foreign_key "projects", "tasks"
   add_foreign_key "projects", "users"
   add_foreign_key "tasks", "projects"
 end
