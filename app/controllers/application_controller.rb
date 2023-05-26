@@ -22,3 +22,12 @@ end
         app_response(message: 'failed', status: 400, data: { info: 'Something went wrong. Please try again' })
     end
 end
+
+ # unhash the token
+ def decode(token)
+    begin
+    JWT.decode(token, ENV['task_bit_key'], false, {algorithm: 'HS256'})
+    rescue JWT::DecodeError => e  
+        app_response(message: 'failed', status: 401, data: { info: e.message })
+    end
+end
