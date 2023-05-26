@@ -31,3 +31,16 @@ end
         app_response(message: 'failed', status: 401, data: { info: e.message })
     end
 end
+
+ # verify authorization headers
+ def verify_auth
+    auth_headers = request.headers['Authorization']
+    if !auth_headers
+        app_response(message: 'failed', status: 401, data: { info: 'Your request is not authorized' })
+    else
+        token = auth_headers.split(' ')[1]
+        save_user_id(token)
+    end
+end
+
+
