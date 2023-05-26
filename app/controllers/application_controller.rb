@@ -56,3 +56,27 @@ def remove_user
     session[:expiry] = Time.now
 end
 
+ # check for session expiry
+ def session_expired?
+    session[:expiry] ||= Time.now
+    time_diff = Time.parse(session[:expiry].to_s) - Time.now
+    puts "time_diff: #{time_diff}"
+
+    unless time_diff > 0
+        app_response(message: 'failed', status: 401, data: { info: 'Your session has expired. Please login again to continue' })
+    end
+end
+
+def save_user_id(token)
+    @uid = decode(token)[0]['data']['uid'].to_i
+end
+
+def user
+    User.find(@uid)
+end
+# rescue all common errors
+def standard_error(exception)
+    app_response(message: 'failed', data: exception.message, status: :unprocessable_entity)
+end
+
+end
