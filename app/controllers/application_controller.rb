@@ -43,4 +43,16 @@ end
     end
 end
 
+ # store user id in session
+ def save_user(id)
+    session[:uid] = id
+    session[:expiry] = 6.hours.from_now
+    puts session[:expiry]
+end
+
+# delete user id in session
+def remove_user
+    session.delete(:uid)
+    session[:expiry] = Time.now
+end
 
