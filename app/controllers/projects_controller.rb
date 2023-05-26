@@ -31,12 +31,28 @@ class ProjectsController < ApplicationController
      end
    end
  
+   def add_task
+    project = Project.find(params[:id])
+    task = Task.new(task_params)
+    task.project = project
+
+    if task.save
+      render json: task, status: :created, serializer: TaskSerializer
+    else
+      render json: { error: task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
    def destroy
      project.destroy
      head :no_content
    end
  
    private
+
+   def task_params
+    params.require(:task).permit(:name, :description, :due_date, :status)
+  end
  
    def project_params
      params.require(:project).permit(:name, :description,)
