@@ -33,6 +33,16 @@ class UsersController < ApplicationController
           render json: { error: 'Unauthorized' }, status: :unauthorized
         end
       end
+
+      def destroy
+        if logged_in?
+          user = User.find(session[:user_id])
+          user.destroy
+          render json: { message: 'User deleted successfully' }, status: :ok
+        else
+          render json: { error: 'Unauthorized' }, status: :unauthorized
+        end
+      end
     
       private
 
@@ -47,7 +57,7 @@ class UsersController < ApplicationController
       def user_params
         params.permit(:username, :password, :password_confirmation, :email, :role)
       end
-      
+
       def user_update_params
         params.permit(:username, :password, :email, :role)
       end
