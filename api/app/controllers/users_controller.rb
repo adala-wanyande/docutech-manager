@@ -1,45 +1,43 @@
 class UsersController < ApplicationController
+  rescue_from ActiveRecord::RecordInvalid, with: :invalid_user
+  wrap_parameters format: []
 
-    # before_action :session_expired?, only: [:show]
-    before_action :verify_auth, only: [:show]
+  skip_before_action :authorization, only: [:create, :destroy, :index]
 
-    def register
-        user = User.create(user_params)
-        if user.valid?
-            save_user(user.id)
-            app_response(message: "registration was successfull", data: user, status: :created)
-        else 
-            app_response(message: "something went wrong during registration", status: :unprocessable_entity, data:user.errors)
-        end
+  def index
+    user = User.all
+    decode_token
+    render json: user, status: :ok
+  end
+
+  def create
+    user = User.create!(users_permit)
+    if user.valid?
+      token = encode_token(user_id: user.id)
+      render json: {user: UserSerializer.new(user), jwt_token: token}, status: :created
+    else
+      render json: {error: "Wrong credentials"}, status: :unprocessable_entity
     end
+  end
 
-    def login
-        sql = "username = :username OR email = :email"
-        user = User.where(sql, { username: user_params[:username], email: user_params[:email] }).first
-        if user&.authenticate(user_params[:password])
-            save_user(user.id)
-            token = encode(user.id)
-            app_response(message: 'Login was successful', status: :ok, data: {user: user, token: token})
-        else
-            app_response(message: 'Invalid username/email or password', status: :unauthorized)
-        end
-    end
+  def show
+    user = User.find_by(id: params[:id])
+    render json: user
+  end
 
-    def logout
-        remove_user
-        app_response(message: 'Logout successful')
-    end
+  def destroy
+    user = User.find_by(id: params[:id])
+    user.delete
+    head :no_content
+  end
 
-    # autologin
-    def show
-        # current_user = User.find_by(id: session[:uid])
-        render json: user
-    end
+  private
 
-private
+  def users_permit
+    params.permit(:username, :password, :email)
+  end
 
-    def user_params
-        params.permit(:username, :email, :password)
-    end
-
+  def invalid_user invalid
+    render json: {error: invalid.record.errors.full_messages}, status: :unprocessable_entity
+  end
 end

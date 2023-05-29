@@ -20,9 +20,9 @@ function App() {
     if (token) {
       try {
         const response = await network.autoLogin();
-        setUser(response.data);
+        setUser(response.data.username);
       } catch (err) {
-        // toast.error(JSON.stringify(err.response.message));
+        toast.error(JSON.stringify(err.response.message));
       }
     }
   };
@@ -38,7 +38,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/newtask" element={<NewTask />} />
-        <Route path="/todos" element={<Todos user={user?.username} />} />
+        <Route path="/todos" element={<Todos user={user? user.username: "Guest"} />} />
         <Route path="/update/:id" element={<UpdateTask />} />
       </Routes>
     </div>

@@ -39,6 +39,7 @@ function Todos({ user }) {
       <ToastContainer />
       <div className="todosNav">
         <nav className="nav">
+
           <Link to="/todos" className="nav__link">
             Task List
           </Link>

@@ -13,19 +13,18 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const details = {
+      username,
       email,
       password,
-      username,
     };
 
     setIsLoading(true);
 
     network
       .register(details)
-      .then((response) => {
+      .then(() => {
         navigate("/login");
       })
       .catch((error) => {
@@ -40,7 +39,7 @@ function Signup() {
     <form className="form" onSubmit={handleSubmit}>
       <ToastContainer />
       <h4 className="">
-        {isLoading ? "Getting  you onboard" : "Sign up to get sarted "}
+        {isLoading ? "Getting you onboard" : "Sign up to get started "}
       </h4>
       <label htmlFor="Email">Email:</label>
       <input
@@ -71,6 +70,7 @@ function Signup() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+
 
       <button type="submit" className="btn">
         sign up
