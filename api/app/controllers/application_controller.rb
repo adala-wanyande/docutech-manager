@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authorization
   skip_before_action :verify_authenticity_token
+include ApplicationHelper
 
 
   def encode_token payload
@@ -25,10 +26,11 @@ class ApplicationController < ActionController::Base
 
   def current_user
     if decode_token
-      user_id = decode_token [0]['user_id']
+      user_id = decode_token[0]['user_id']
       user = User.find_by(id: user_id)
       render json: user
     end
+
   end
 
   def logged_in?
@@ -39,4 +41,6 @@ class ApplicationController < ActionController::Base
     render json: {message: 'Kindly log in'}, status: :unauthorized unless logged_in?
   end
 
+  private
+  
 end

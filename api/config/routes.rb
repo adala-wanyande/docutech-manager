@@ -11,6 +11,6 @@ Rails.application.routes.draw do
 
   post '/login', to: 'auth#create'
   delete '/logout', to: 'auth#destroy'
-  get '/users/login/check', to: 'auth#show'
+  get '/users/login/check', to: 'auth#create'
 
 end

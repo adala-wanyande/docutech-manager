@@ -7,7 +7,8 @@ class AuthController < ApplicationController
     user = User.find_by(email: params[:email])
     if user&.authenticate(params[:password])
       token = encode_token(user_id: user.id)
-      render json: {message: "success"}, status: :created
+      
+      render json: {message: "success", username: user.username  }, status: :created
     else
       render json: {error: "bad credentials"}, status: :unprocessable_entity
     end
@@ -22,7 +23,8 @@ class AuthController < ApplicationController
   #   else
   #   end
   # end
-  def show
-    render json: { user: current_user }, status: :accepted
-  end
+  # def show
+  #     user = User.find_by(email: params[:email])
+  #     render json: user
+  # end
 end
