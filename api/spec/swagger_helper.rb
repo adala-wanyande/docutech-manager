@@ -27,7 +27,7 @@ RSpec.configure do |config|
           url: 'https://localhost:3000',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'https://localhost:3000'
             }
           }
         }

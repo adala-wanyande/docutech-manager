@@ -36,9 +36,37 @@ RSpec.describe 'api/my', type: :request do
     end
   end
 
-  path '/projects' do
-    get 'Returns all projects' do
-      tags 'Projects'
+     path '/login' do
+      get 'Logs in existing users' do
+        tags 'login'
+        produces 'application/json'
+  
+        response '200', 'OK' do
+          schema type: :array,
+                 items: { '$ref' => '#/login' }
+          run_test!
+        end
+      end
+    end
+
+
+    path '/logout' do
+      get 'Logs out existing users' do
+        tags 'logout'
+        produces 'application/json'
+  
+        response '200', 'OK' do
+          schema type: :array,
+                 items: { '$ref' => '#/logout' }
+          run_test!
+        end
+      end
+    end
+
+
+  path '/todos' do
+    get 'Returns all to-dos' do
+      tags 'to-do'
       produces 'application/json'
 
       response '200', 'OK' do
@@ -48,8 +76,9 @@ RSpec.describe 'api/my', type: :request do
       end
     end
 
-    post 'Creates a project' do
-      tags 'Projects'
+
+    post 'Creates a to-do' do
+      tags 'to-do'
       consumes 'application/json'
       produces 'application/json'
       parameter name: :project, in: :body, schema: {
@@ -61,12 +90,12 @@ RSpec.describe 'api/my', type: :request do
         required: [:name]
       }
 
-      response '201', 'Project created' do
+      response '201', 'To-do created' do
         schema '$ref' => '#/components/schemas/Project'
         run_test!
       end
 
-      response '422', 'Invalid project parameters' do
+      response '422', 'Invalid To-do parameters' do
         schema '$ref' => '#/components/schemas/Error'
         run_test!
       end

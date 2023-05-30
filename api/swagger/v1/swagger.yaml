@@ -45,11 +45,39 @@ paths:
               - password_confirmation
               - email
               - role
-  "/projects":
+  "/login":
     get:
-      summary: Returns all projects
+      summary: Logs in existing users
       tags:
-      - Projects
+      - login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/login"
+  "/logout":
+    get:
+      summary: Logs out existing users
+      tags:
+      - logout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/logout"
+  "/todos":
+    get:
+      summary: Returns all to-dos
+      tags:
+      - to-do
       responses:
         '200':
           description: OK
@@ -60,19 +88,19 @@ paths:
                 items:
                   "$ref": "#/components/schemas/Project"
     post:
-      summary: Creates a project
+      summary: Creates a to-do
       tags:
-      - Projects
+      - to-do
       parameters: []
       responses:
         '201':
-          description: Project created
+          description: To-do created
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Project"
         '422':
-          description: Invalid project parameters
+          description: Invalid To-do parameters
           content:
             application/json:
               schema:
@@ -93,4 +121,4 @@ servers:
 - url: https://localhost:3000
   variables:
     defaultHost:
-      default: www.example.com
+      default: https://localhost:3000
