@@ -4,7 +4,7 @@ import { removeToken } from "./auth";
 
 const instance = () =>
   axios.create({
-    baseURL: "https://docutech-web-api-system.onrender.com",
+    baseURL: "http://localhost:3000",
     timeout: 60000,
     headers: {
       "Content-Type": "application/json",
