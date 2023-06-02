@@ -6,7 +6,7 @@ function Home() {
       <div>
         <h1>
           <span className="highlight">Conquer</span> your day with
-          <span className="highlight">TaskBit</span>
+          <span className="highlight">DocuTech</span>
         </h1>
         <h4>
           A simple and user-friendly app designed to help you stay on top of

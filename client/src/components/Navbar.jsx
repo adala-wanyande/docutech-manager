@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import network from "../utils/network";
-import { getToken } from "../utils/auth";
+import { getToken, storeToken } from "../utils/auth";
 function Navbar() {
   const onlogout = () => {
     network.logout();
     window.location.reload();
     window.location.href = "/";
+
   };
   const token = getToken();
   return (

@@ -4,7 +4,7 @@ import { removeToken } from "./auth";
 
 const instance = () =>
   axios.create({
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "https://docutech-web-api-system.onrender.com",
     timeout: 60000,
     headers: {
       "Content-Type": "application/json",
@@ -17,12 +17,12 @@ const register = (data) => {
 };
 
 const login = (data) => {
-  return instance().post("/users/login", data);
+  return instance().post("/login", data);
 };
 
-const logout = () => {
+const logout = (data) => {
   removeToken();
-  return instance().delete("/users/logout");
+  return instance().delete("/logout", data);
 };
 
 const addTask = (data) => {

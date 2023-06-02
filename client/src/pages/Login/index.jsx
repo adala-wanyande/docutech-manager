@@ -24,13 +24,19 @@ function Login({ setUser }) {
     network
       .login(details)
       .then((response) => {
-        storeToken(response.data.data.token);
-        navigate("/todos");
-        console.log(response.data.data.user);
-        setUser(response.data.data.user);
-      })
+        storeToken(response.data);
+        if(response.data.status !== "created"){
+          navigate("/login")
+        }
+        navigate("/todos")
+        console.log(response.data);
+        setUser(response.data)
+        }
+
+      )
       .catch((error) => {
-        toast.error(JSON.stringify(error.response.data.message));
+
+        toast.error(JSON.stringify(error.response.data.error));
       })
       .finally(() => {
         setIsLoading(false);
@@ -62,7 +68,7 @@ function Login({ setUser }) {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button className="btn">login</button>
+      <button className="btn" onSubmit={handleSubmit}>login</button>
       <p>
         Don't have an account?{" "}
         <Link to="/signup" className="formLink">
