@@ -38,7 +38,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/newtask" element={<NewTask />} />
-        <Route path="/todos" element={<Todos user={user? user.username: "Guest"} />} />
+        <Route path="/todos" element={<Todos user={user? `Welcome back, ${user.username}`: "Guest"} />} />
         <Route path="/update/:id" element={<UpdateTask />} />
       </Routes>
     </div>
