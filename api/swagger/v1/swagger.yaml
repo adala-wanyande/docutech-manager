@@ -1,0 +1,124 @@
+---
+openapi: 3.0.1
+info:
+  title: DUOTECH-MANAGER-API
+  version: v1
+paths:
+  "/users":
+    post:
+      summary: Creates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '422':
+          description: Invalid user parameters
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+              required:
+              - username
+              - password
+              - password_confirmation
+              - email
+              - role
+  "/login":
+    get:
+      summary: Logs in existing users
+      tags:
+      - login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/login"
+  "/logout":
+    get:
+      summary: Logs out existing users
+      tags:
+      - logout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/logout"
+  "/todos":
+    get:
+      summary: Returns all to-dos
+      tags:
+      - to-do
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Project"
+    post:
+      summary: Creates a to-do
+      tags:
+      - to-do
+      parameters: []
+      responses:
+        '201':
+          description: To-do created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Project"
+        '422':
+          description: Invalid To-do parameters
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+              - name
+servers:
+- url: https://localhost:3000
+  variables:
+    defaultHost:
+      default: https://localhost:3000
